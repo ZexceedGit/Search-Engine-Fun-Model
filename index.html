@@ -82,7 +82,7 @@
             top:0;
             z-index:2;
             left:0;
-            display: flex;
+            display: none;
             overflow:auto;
             align-items: center;
             justify-content: center;
@@ -155,7 +155,7 @@
             <a href="#">Terms</a>
         </div>
         <div class="copyright">
-            <p>© 2026 QueryBug All rights reserved.</p>
+            <p>© 2026 QueryBug. All rights reserved.</p>
         </div>
     </footer>
     </div>
@@ -192,7 +192,9 @@
     </div>
 
 
-    <div class="modal">
+  
+</section>
+  <div class="modal">
         <div class="modal-content">
             <h3>Devesjay Premium</h3>
             <p>Unlock full research result?</p>
@@ -205,7 +207,6 @@
         </div>
     </div>
 
-</section>
 
 <script>
     let userInput = document.getElementById("userInput")
@@ -216,11 +217,7 @@
     searchBtn.addEventListener("click", () => {
         let inputValue = userInput.value;
         if(!inputValue) return;
-        switch(inputValue.toLowerCase()){
-            case 'trojan':
-             document.querySelector(".search-result").style.display = "flex";
-             document.querySelector(".container").style.display = "none"
-             break
+        switch(inputValue.toLowerCase()){            
             default:
              document.querySelector(".search-result").style.display = "flex";
              document.querySelector(".container").style.display = "none"
@@ -326,7 +323,6 @@ function fetchData(query) {
             searchContainer.appendChild(errorCard);
         });
 }
-
 function addResultCard(container, titleText, url) {
     const card = document.createElement("div");
     card.classList.add("result-card");
@@ -335,6 +331,15 @@ function addResultCard(container, titleText, url) {
         <span class="result-url">${url}</span>
         <p class="result-desc">${titleText}</p>
     `;
+
+    const link = card.querySelector("a");
+
+    link.addEventListener("click", (e) => {
+        let modal = document.querySelector(".modal")
+        e.preventDefault();
+        document.querySelector(".modal").style.display = "flex"
+    });
+
     container.appendChild(card);
 }
 
