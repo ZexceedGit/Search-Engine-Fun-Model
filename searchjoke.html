@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&display=swap');
+
+        * {
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+            font-family: "Space Grotesk", sans-serif;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height:100vh;
+        }
+        .center {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex:1;
+            gap:30px;
+        }
+        .center h1 {
+            font-size:3rem;
+            letter-spacing: 10px;
+        }
+        .center input {
+            width:600px;
+            padding:10px;
+        }
+        .center button {
+            padding:10px 30px;
+            cursor: pointer;
+        }
+        footer {
+            text-align: center;
+            padding:20px;
+        }
+        footer .links {
+            display: flex;
+            justify-content: center;
+            gap:30px;
+            margin-bottom:15px;
+        }
+        footer .links a {
+            text-decoration: none;
+            color:black;
+        }
+        footer .copyright p {
+            font-size:0.8rem;
+        }
+
+        .search-result {
+            display: none;
+            flex-direction: column;
+            gap:30px;
+            padding:10px;
+            max-width: 600px;
+            margin-left:80px;
+            margin-top:40px;
+        }
+        .result-card {
+            display: flex;
+            flex-direction: column;
+            gap:10px;
+        }
+        .result-card a {
+            text-decoration: none;
+            font-size:1.2rem;
+        }
+
+         /* MOdal */
+         .modal {
+            position:fixed;
+            top:0;
+            z-index:2;
+            left:0;
+            display: flex;
+            overflow:auto;
+            align-items: center;
+            justify-content: center;
+            width:100%;
+            height:100%;
+            background-color:rgba(0,0,0,0.5)
+         }
+         .modal-content {
+            background-color: white;
+            padding:25px;
+            display: flex;
+            flex-direction: column;
+            gap:10px;
+            width:400px;
+            border:2px solid black;
+         }
+         .modal-content h3 {
+            font-size:1.5rem;
+         }
+         .modal-content p {
+            color:gray;
+         }
+         .modal-content h1 {
+            padding:20px 10px;
+            font-size:2.8rem;
+         }
+         .modal-content span {
+            color:gray;
+            font-size:0.8rem;
+            text-align: center;
+         }
+         .modal-content .buttons-container {
+            display: flex;
+            gap:10px;
+            justify-content: center;
+            margin-bottom:10px;
+         }
+         .modal-content .buttons-container button {
+            padding:10px 40px;
+            cursor: pointer;
+         }
+         .modal-content .buttons-container button:nth-child(1){
+            background-color: black;
+            color:white;
+         }
+         .modal-content .buttons-container button:nth-child(2){
+            background-color: transparent;
+            color:black;
+            border:2px solid black;
+         }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="center">
+        <div class="text">
+        <h1>QueryBug</h1>
+        <p>[Beta]</p>
+        </div>
+        <input type="text" id="userInput" placeholder="Search. . .">
+        <button id="searchBtn">Search</button>
+    </div>
+    <footer>
+        <div class="links">
+            <a href="#">About</a>
+            <a href="#">Advertising</a>
+            <a href="#">Business</a>
+            <a href="#">How Search works</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+        </div>
+        <div class="copyright">
+            <p>© 2026 YourSiteName. All rights reserved.</p>
+        </div>
+    </footer>
+    </div>
+
+   <section class="search-result">
+    <a href="#" id="backBtn">Back</a>
+    <h1>Search Results:</h1>
+
+    <div class="result-card">
+        <a href="#" class="result-title">Easy Hello World Recipe for Beginners</a>
+        <span class="result-url">https://www.allrecipes.com › hello-world-recipe</span>
+        <p class="result-desc">
+            Learn how to create a simple "Hello World" themed recipe with easy steps,
+            perfect for beginners who want to try something fun and creative.
+        </p>
+    </div>
+
+    <div class="result-card">
+        <a href="#" class="result-title">What is the "Hello World" Recipe Trend?</a>
+        <span class="result-url">https://www.reddit.com › r/cooking</span>
+        <p class="result-desc">
+            People online are sharing their own versions of the "Hello World" recipe.
+            See discussions, variations, and community tips from real users.
+        </p>
+    </div>
+
+    <div class="result-card">
+        <a href="#" class="result-title">10 Creative "Hello World" Dishes You Should Try</a>
+        <span class="result-url">https://www.foodblog.com › hello-world-dishes</span>
+        <p class="result-desc">
+            Explore unique and creative dishes inspired by the "Hello World" concept,
+            from desserts to savory meals that are fun and easy to make.
+        </p>
+    </div>
+
+
+    <div class="modal">
+        <div class="modal-content">
+            <h3>Devesjay Premium</h3>
+            <p>Unlock full research result?</p>
+            <h1>$9.99</h1>
+            <div class="buttons-container">
+                <button id="upgrade">Upgrade Now</button>
+                <button class="cancel">Maybe Later</button>
+            </div>
+            <span>Recurring - No Cancellation</span>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    let userInput = document.getElementById("userInput")
+    let searchBtn = document.getElementById("searchBtn")
+    let backBtn = document.getElementById("backBtn")
+    let cancelBtn = document.querySelector(".cancel")
+
+    searchBtn.addEventListener("click", () => {
+        let inputValue = userInput.value;
+        if(!inputValue) return;
+        switch(inputValue.toLowerCase()){
+            case 'joke':
+             document.querySelector(".search-result").style.display = "flex";
+             document.querySelector(".container").style.display = "none"
+             break
+            default:
+             document.querySelector(".search-result").style.display = "flex";
+             document.querySelector(".container").style.display = "none"
+              fetchData(inputValue)
+        }
+    })
+    backBtn.addEventListener("click", () => {
+        document.querySelector(".search-result").style.display = "none";
+        document.querySelector(".container").style.display = "flex"
+         userInput.value = ""
+    })
+cancelBtn.addEventListener("click", () => {
+    const modalContainer = document.querySelector(".modal");
+    spawnMultipleModals()
+});
+let modalsToSpawn = 1
+
+function spawnModal() {
+    let modal = document.querySelector(".modal")
+    const content = document.createElement("div");
+    content.classList.add("modal-content");
+
+    content.innerHTML = `
+        <h3>Devesjay Premium</h3>
+        <p>Unlock full research result?</p>
+        <h1>$9.99</h1>
+        <div class="buttons-container">
+            <button class="upgrade">Upgrade Now</button>
+            <button class="cancel">Maybe Later</button>
+        </div>
+        <span>Recurring - No Cancellation</span>
+    `;
+
+    const modalWidth = 400;  
+    const modalHeight = 300; 
+    const maxX = window.innerWidth - modalWidth;
+    const maxY = window.innerHeight - modalHeight;
+    const randomX = Math.floor(Math.random() * maxX);
+    const randomY = Math.floor(Math.random() * maxY);
+
+    content.style.position = "fixed";
+    content.style.left = randomX + "px";
+    content.style.top = randomY + "px";
+
+    content.querySelector(".cancel").addEventListener("click", () => spawnMultipleModals());
+    content.querySelector(".upgrade").addEventListener("click", () => {
+        alert("Thanks for upgrading!");
+        modal.remove();
+    });
+
+    modal.appendChild(content);
+}
+
+function spawnMultipleModals() {
+    for (let i = 0; i < modalsToSpawn; i++) {
+        setTimeout(() => {
+         spawnModal();
+        }, i * 50)
+    }
+        modalsToSpawn *= 2; 
+
+   
+}
+function fetchData(query) {
+    const searchContainer = document.querySelector(".search-result");
+    searchContainer.innerHTML = `<a href="#" id="backBtn">Back</a><h1>Search Results:</h1>`;
+
+    fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json`)
+        .then(res => res.json())
+        .then(data => {
+            const results = data.RelatedTopics || [];
+
+            if (results.length === 0) {
+                const noResultCard = document.createElement("div");
+                noResultCard.classList.add("result-card");
+                noResultCard.innerHTML = `<p>No search results found for "<strong>${query}</strong>"</p>`;
+                searchContainer.appendChild(noResultCard);
+            } else {
+                results.forEach(item => {
+                    if (item.Topics) {
+                        item.Topics.forEach(subItem => {
+                            addResultCard(searchContainer, subItem.Text, subItem.FirstURL);
+                        });
+                    } else {
+                        addResultCard(searchContainer, item.Text, item.FirstURL);
+                    }
+                });
+            }
+
+            searchContainer.style.display = "flex";
+
+            document.getElementById("backBtn").addEventListener("click", () => {
+                searchContainer.style.display = "none";
+                document.querySelector(".container").style.display = "flex";
+                document.getElementById("userInput").value = "";
+            });
+        })
+        .catch(err => {
+            console.error(err);
+            const errorCard = document.createElement("div");
+            errorCard.classList.add("result-card");
+            errorCard.innerHTML = `<p>Error fetching results. Please try again later.</p>`;
+            searchContainer.appendChild(errorCard);
+        });
+}
+
+function addResultCard(container, titleText, url) {
+    const card = document.createElement("div");
+    card.classList.add("result-card");
+    card.innerHTML = `
+        <a href="${url}" class="result-title" target="_blank">${titleText.split(' - ')[0]}</a>
+        <span class="result-url">${url}</span>
+        <p class="result-desc">${titleText}</p>
+    `;
+    container.appendChild(card);
+}
+
+</script>
+</body>
+</html>
